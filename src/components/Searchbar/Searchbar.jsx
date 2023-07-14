@@ -4,25 +4,39 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export class Searchbar extends Component {
+  state = {
+    inputSearch: '',
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log(e.target.value);
+  };
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState(prevState => ({ ...prevState, [name]: value }));
+  }
+
   render() {
     const { onSubmit } = this.props;
     return (
       <div>
-        <header class="searchbar">
-          <form class="form">
-            <button type="submit" className="button" onClick={onSubmit}>
-              <span class="button-label">
+        <header className="searchbar">
+          <form onSubmit={onSubmit} className="form">
+            <button type="submit" className="button">
+              <span className="button-label">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </span>
             </button>
 
             <input
+              onChange={this.handleChange}
               value={this.inputSearch}
-              name="searchbarInput"
-              class="input"
+              name="inputSearch"
+              className="input"
               type="text"
-              autocomplete="off"
-              autofocus
+              autoComplete="off"
+              autoFocus
               placeholder="Search images and photos"
             />
           </form>
