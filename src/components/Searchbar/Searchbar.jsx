@@ -6,8 +6,8 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 export const Searchbar = ({ onSubmit }) => {
   return (
     <header className="searchbar">
-      <form className="form">
-        <button type="submit" className="button" onClick={onSubmit}>
+      <form onSubmit={onSubmit} className="form" name="searchform">
+        <button type="submit" className="button" name="searchbtn">
           <span className="button-label">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </span>

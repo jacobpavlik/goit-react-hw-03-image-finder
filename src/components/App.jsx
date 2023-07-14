@@ -32,17 +32,20 @@ export class App extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(e.target.value);
+    this.inputSearch = e.target.elements.inputSearch.value;
+    console.log('fetch - nowe zdjęcia');
   };
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState(prevState => ({ ...prevState, [name]: value }));
-  }
+  // handleChange(e) {
+  //   const { name, value } = e.target;
+  //   this.setState(prevState => ({ ...prevState, [name]: value }));
+  // }
 
   render() {
+    console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
     return (
       <div>
         React homework template
+        <Loader />
         <Searchbar onSubmit={this.handleSubmit} />
       </div>
     );
