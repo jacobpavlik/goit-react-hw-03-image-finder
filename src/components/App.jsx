@@ -29,15 +29,21 @@ export class App extends Component {
       console.log('Error', error);
     }
   };
-  onSubmit = () => {
-    console.log('zeby coś było - tu warunki i fetch chyba');
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log(e.target.value);
   };
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState(prevState => ({ ...prevState, [name]: value }));
+  }
 
   render() {
     return (
       <div>
         React homework template
-        <Searchbar onSubmit={this.onSubmit} />
+        <Searchbar onSubmit={this.handleSubmit} />
       </div>
     );
   }
