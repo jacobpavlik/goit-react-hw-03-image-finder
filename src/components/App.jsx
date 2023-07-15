@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
-
+import { ImageGallery } from './ImageGallery/ImageGallery';
 export class App extends Component {
   state = {
     images: [],
@@ -33,7 +33,14 @@ export class App extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.inputSearch = e.target.elements.inputSearch.value;
-    console.log('fetch - nowe zdjęcia');
+    console.log('fetch - nowe zdjęcia', this.inputSearch);
+    this.setState(prevState => ({
+      ...prevState,
+      inputSearch: this.inputSearch,
+    }));
+    console.log('inputsearch po handleSubmit', this.inputSearch);
+    this.fetchImages();
+    // this.setState({ inputSearch: '' });
   };
   // handleChange(e) {
   //   const { name, value } = e.target;
@@ -47,6 +54,8 @@ export class App extends Component {
         React homework template
         <Loader />
         <Searchbar onSubmit={this.handleSubmit} />
+        {console.log('inputSearch po render', this.inputSearch)}
+        <ImageGallery images={this.state.images} />
       </div>
     );
   }
