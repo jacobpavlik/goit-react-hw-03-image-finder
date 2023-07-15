@@ -6,7 +6,8 @@ export const ImageGallery = ({ images }) => {
     <ul class="gallery">
       {images.map(image => (
         <ImageGalleryItem
-          id={image.id}
+          key={image.id}
+          //   id={image.id}
           webformatURL={image.webformatURL}
           largeImageURL={image.largeImageURL}
           alt={image.tags}
@@ -19,11 +20,6 @@ ImageGallery.propTypes = {
   name: PropTypes.string,
 };
 
-{
-  /* <li key={image.id}>
-  <img src={image.webformatURL} alt={image.tags} />
-</li> */
-}
 // import PropTypes from 'prop-types';
 // export const ImageGalleryItem = ({ id, webformatURL, largeImageURL, tags }) => {
 //   return (

@@ -19,6 +19,7 @@ export class App extends Component {
   fetchImages = async () => {
     try {
       const { inputSearch, page, per_page, key } = this.state;
+      console.log('Fetch - try', inputSearch);
       const response = await fetch(
         `https://pixabay.com/api/?q=${inputSearch}&${page}&key=${key}&image_type=photo&orientation=horizontal&${per_page}`
       );
@@ -40,6 +41,7 @@ export class App extends Component {
     }));
     console.log('inputsearch po handleSubmit', this.inputSearch);
     this.fetchImages();
+    console.log('inputsearch po fetchImages', this.inputSearch);
     // this.setState({ inputSearch: '' });
   };
   // handleChange(e) {
