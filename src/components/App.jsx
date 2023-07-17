@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './App.module.css';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Button } from './Button/Button';
+import { Modal } from './Modal/Modal';
 export class App extends Component {
   state = {
     images: [],
@@ -63,17 +66,26 @@ export class App extends Component {
     // this.fetchImages();
     // this.setState({ inputSearch: '' });
   };
-
+  handleLoadMore = () => {
+    console.log('Wciskam i wgrywa się wiecej, jeśli są');
+  };
+  toggleModal = () => {};
   // koniec poprawionego setState z callbackiem
   render() {
     console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
     return (
-      <div>
-        React homework template
-        <Loader />
+      <div className={css.app}>
+        {/* <Loader /> */}
         <Searchbar onSubmit={this.handleSubmit} />
         {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} />
+        <Button label="Load More" action={this.handleLoadMore} />
+        {/* <Modal
+          largeImageURL={this.state.images.largeImageURL}
+          alt={this.state.images.tags}
+          action={this.toggleModal}
+          actionKey={() => {}}
+        /> */}
       </div>
     );
   }
