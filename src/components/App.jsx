@@ -69,7 +69,7 @@ export class App extends Component {
   handleLoadMore = () => {
     console.log('Wciskam i wgrywa się wiecej, jeśli są');
   };
-  toggleModal = () => {};
+
   // koniec poprawionego setState z callbackiem
   render() {
     console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
@@ -80,12 +80,12 @@ export class App extends Component {
         {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} />
         <Button label="Load More" action={this.handleLoadMore} />
-        {/* <Modal
+        <Modal
           largeImageURL={this.state.images.largeImageURL}
           alt={this.state.images.tags}
           action={this.toggleModal}
           actionKey={() => {}}
-        /> */}
+        />
       </div>
     );
   }
