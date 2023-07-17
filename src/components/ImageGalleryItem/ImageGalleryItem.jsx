@@ -9,6 +9,8 @@ export const ImageGalleryItem = ({ id, webformatURL, largeImageURL, tags }) => {
         src={webformatURL}
         alt={tags}
         large={largeImageURL}
+        data-alt={tags}
+        data-large={largeImageURL}
       />
     </li>
   );

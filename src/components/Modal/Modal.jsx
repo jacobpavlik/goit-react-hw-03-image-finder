@@ -12,15 +12,16 @@ export class Modal extends Component {
   // };
 
   render() {
-    const { largeImageURL, alt, action, actionKey } = this.props;
-
-    return (
-      <div className={css.overlay} onClick={action}>
-        <div className={css.modal} onKeyDown={actionKey}>
-          <img src={largeImageURL} alt={alt} />
+    const { largeImageURL, alt, action, actionKey, modal } = this.props;
+    if (modal) {
+      return (
+        <div className={css.overlay} onClick={action}>
+          <div className={css.modal} onKeyDown={actionKey}>
+            <img src={largeImageURL} alt={alt} />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

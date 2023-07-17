@@ -13,6 +13,7 @@ export class App extends Component {
     page: 1,
     per_page: 12,
     key: '36681363-b7657bef76d16cbfae88b6c43',
+    isModalOpen: false,
   };
 
   async componentDidMount() {
@@ -66,15 +67,29 @@ export class App extends Component {
     // this.fetchImages();
     // this.setState({ inputSearch: '' });
   };
+  // koniec poprawionego setState z callbackiem
   handleLoadMore = () => {
     console.log('Wciskam i wgrywa się wiecej, jeśli są');
   };
 
-  toggleModal = isModalOpen => {
-    this.setState(prevState => ({ isModalOpen: !isModalOpen }));
+  toggleModal = e => {
+    this.setState(prevState => ({ isModalOpen: !prevState.isModalOpen }));
+    this.largeImageURL = e.target.dataset.large;
+    this.alt = e.target.dataset.alt;
   };
+  // closeModalOnKey = e => {
+  //   e ===
+  //   if (e.key === 'Escape') {
+  //     this.setState(prevState => ({ isModalOpen: false }));
+  //   }
+  // };
 
-  // koniec poprawionego setState z callbackiem
+  // closeModalOnKey = e => {
+  //   if ('key' in e && e.key === 'Escape') {
+  //     this.setState(prevState => ({ isModalOpen: false }));
+  //   }
+  // };
+
   render() {
     console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
     return (
@@ -82,13 +97,14 @@ export class App extends Component {
         {/* <Loader /> */}
         <Searchbar onSubmit={this.handleSubmit} />
         {console.log('inputSearch po render', this.inputSearch)}
-        <ImageGallery images={this.state.images} />
+        <ImageGallery images={this.state.images} action={this.toggleModal} />
         <Button label="Load More" action={this.handleLoadMore} />
         <Modal
-          largeImageURL={this.state.images.largeImageURL}
-          alt={this.state.images.tags}
+          largeImageURL={this.largeImageURL}
+          alt={this.alt}
           action={this.toggleModal}
-          actionKey={() => {}}
+          actionKey={this.closeModalOnKey}
+          modal={this.state.isModalOpen}
         />
       </div>
     );
