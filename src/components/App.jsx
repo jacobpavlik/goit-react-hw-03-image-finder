@@ -70,6 +70,10 @@ export class App extends Component {
     console.log('Wciskam i wgrywa się wiecej, jeśli są');
   };
 
+  toggleModal = isModalOpen => {
+    this.setState(prevState => ({ isModalOpen: !isModalOpen }));
+  };
+
   // koniec poprawionego setState z callbackiem
   render() {
     console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
