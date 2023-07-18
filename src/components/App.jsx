@@ -15,6 +15,7 @@ export class App extends Component {
     isMorePages: false,
     perPage: 12,
   };
+  totalHits = 0;
 
   async componentDidMount() {
     this.fetchImages();
@@ -41,7 +42,10 @@ export class App extends Component {
         `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=36681363-b7657bef76d16cbfae88b6c43&image_type=photo&orientation=horizontal&per_page=12`
       );
       const data = await response.json();
+      this.setState({ totalHits: response.data.totalHits });
+      console.log('data ->', data);
       return data;
+
       // this.setState(prevState => ({ ...prevState, images: data.hits }));
     } catch (error) {
       console.log('Error', error);
@@ -76,16 +80,16 @@ export class App extends Component {
         }
       }
     );
-    if (this.totalHits > this.perPage) {
-      // this.setState(prevState => {
-      //   return { isPages: true };
-      // });
-      this.setIsPages(true);
+    if (this.totalHits > this.state.perPage) {
+      this.setState(prevState => {
+        return { isMorePages: true };
+      });
+      // setIsPages(true);
     } else {
-      // this.setState(prevState => {
-      //   return { isPages: false };
-      // });
-      this.setIsPages(false);
+      this.setState(prevState => {
+        return { isMorePages: false };
+      });
+      // setIsPages(false);
     }
   };
   //       jak najmniej w state ma być - dodaję na sztywno, pozostawiam tylko inputSearch(wyszukiwanie) i page(loadMore)
@@ -97,16 +101,16 @@ export class App extends Component {
     this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
     console.log('Wgrywam - strona:', this.state.page);
     let totalPages = 0;
-    if (this.totalHits % this.perPage !== 0) {
-      totalPages = Math.trunc(this.totalHits / this.perPage) + 1;
-    } else if (this.totalHits % this.perPage === 0) {
-      totalPages = this.totalHits / this.perPage;
+    if (this.totalHits % this.state.perPage !== 0) {
+      totalPages = Math.trunc(this.totalHits / this.state.perPage) + 1;
+    } else if (this.totalHits % this.state.perPage === 0) {
+      totalPages = this.totalHits / this.state.perPage;
     }
     if (totalPages === this.state.page) {
-      // this.setState(prevState => {
-      //   return { isPages: false };
-      // });
-      this.setIsPages(false);
+      this.setState(prevState => {
+        return { isMorePages: false };
+      });
+      // this.setIsPages(false);
     }
   };
 
@@ -137,6 +141,11 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleSubmit} />
         {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} action={this.toggleModal} />
+        {/* {
+          (this.state.isModalOpen = true && (
+            <Button label="Load More" action={this.handleLoadMore} />
+          ))
+        } */}
         <Button label="Load More" action={this.handleLoadMore} />
         <Modal
           largeImageURL={this.largeImageURL}
