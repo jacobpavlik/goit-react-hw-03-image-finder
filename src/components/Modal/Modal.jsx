@@ -7,10 +7,6 @@ export class Modal extends Component {
     isModalOpen: false,
   };
 
-  // toggleModal = isModalOpen => {
-  //   this.setState(prevState => ({ isModalOpen: !isModalOpen }));
-  // };
-
   render() {
     const { largeImageURL, alt, action, actionKey, modal } = this.props;
     if (modal) {
@@ -25,6 +21,14 @@ export class Modal extends Component {
   }
 }
 
+Modal.propTypes = {
+  largeImageURL: PropTypes.string,
+  alt: PropTypes.string,
+  action: PropTypes.func,
+  actionKey: PropTypes.func,
+};
+
+// funkcyjny - też działa
 // export const Modal = ({ largeImageURL, alt, action, actionKey }) => (
 //   <div className={css.overlay} onClick={action}>
 //     <div className={css.modal} onKeyDown={actionKey}>
@@ -32,10 +36,3 @@ export class Modal extends Component {
 //     </div>
 //   </div>
 // );
-
-Modal.propTypes = {
-  largeImageURL: PropTypes.string,
-  alt: PropTypes.string,
-  action: PropTypes.func,
-  actionKey: PropTypes.func,
-};

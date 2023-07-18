@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import css from './App.module.css';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
@@ -28,30 +27,22 @@ export class App extends Component {
         ...prevState,
         images: [...prevState.images, ...data.hits],
       }));
-      console.log('aktualizuje dane i pobiera fetcha');
     }
   }
 
-  // this.setState(prevState => ({ ...prevState, images: data.hits }));
   // Poprawiony setState z callbackiem
 
   fetchImages = async () => {
     try {
       const { inputSearch, page } = this.state;
       this.setState({ isLoader: true });
-
-      console.log(inputSearch);
       const response = await fetch(
         `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=36681363-b7657bef76d16cbfae88b6c43&image_type=photo&orientation=horizontal&per_page=12`
       );
       const data = await response.json();
       this.totalHits = data.totalHits;
-      console.log('data.totalHits ->', data.totalHits);
       this.setState({ isLoader: false });
-
       return data;
-
-      // this.setState(prevState => ({ ...prevState, images: data.hits }));
     } catch (error) {
       console.log('Error', error);
       this.setState({ isLoader: false });
@@ -78,7 +69,7 @@ export class App extends Component {
               images: response.hits,
             }));
             if (this.totalHits === 0) {
-              console.log('brak obrazów o takiej nazwie');
+              alert('No images were found matching your listing, sorry.');
             }
             if (this.totalHits > this.state.perPage) {
               this.setState(prevState => {
@@ -107,7 +98,6 @@ export class App extends Component {
 
   handleLoadMore = () => {
     this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
-    console.log('Wgrywam - strona:', this.state.page);
     let totalPages = 0;
     if (this.totalHits % this.state.perPage !== 0) {
       totalPages = Math.trunc(this.totalHits / this.state.perPage) + 1;
@@ -142,12 +132,10 @@ export class App extends Component {
   };
 
   render() {
-    console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
     return (
       <div className={css.app}>
         {this.state.isLoader && <Loader />}
         <Searchbar onSubmit={this.handleSubmit} />
-        {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} action={this.toggleModal} />
         {this.state.isMorePages && (
           <Button label="Load More" action={this.handleLoadMore} />
