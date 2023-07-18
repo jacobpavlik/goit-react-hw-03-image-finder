@@ -14,6 +14,7 @@ export class App extends Component {
     page: 1,
     isMorePages: false,
     perPage: 12,
+    isLoader: false,
   };
   totalHits = 0;
 
@@ -37,6 +38,8 @@ export class App extends Component {
   fetchImages = async () => {
     try {
       const { inputSearch, page } = this.state;
+      this.setState({ isLoader: true });
+
       console.log(inputSearch);
       const response = await fetch(
         `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=36681363-b7657bef76d16cbfae88b6c43&image_type=photo&orientation=horizontal&per_page=12`
@@ -44,11 +47,14 @@ export class App extends Component {
       const data = await response.json();
       this.totalHits = data.totalHits;
       console.log('data.totalHits ->', data.totalHits);
+      this.setState({ isLoader: false });
+
       return data;
 
       // this.setState(prevState => ({ ...prevState, images: data.hits }));
     } catch (error) {
       console.log('Error', error);
+      this.setState({ isLoader: false });
     }
   };
 
@@ -139,7 +145,7 @@ export class App extends Component {
     console.log(this.state.images, 'tutaj zaostała przekazana tablica obrazów');
     return (
       <div className={css.app}>
-        {/* <Loader /> */}
+        {this.state.isLoader && <Loader />}
         <Searchbar onSubmit={this.handleSubmit} />
         {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} action={this.toggleModal} />
