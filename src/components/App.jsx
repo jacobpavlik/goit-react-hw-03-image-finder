@@ -42,8 +42,8 @@ export class App extends Component {
         `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=36681363-b7657bef76d16cbfae88b6c43&image_type=photo&orientation=horizontal&per_page=12`
       );
       const data = await response.json();
-      this.setState({ totalHits: response.data.totalHits });
-      console.log('data ->', data);
+      this.totalHits = data.totalHits;
+      console.log('data.totalHits ->', data.totalHits);
       return data;
 
       // this.setState(prevState => ({ ...prevState, images: data.hits }));
@@ -55,7 +55,6 @@ export class App extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.inputSearch = e.target.elements.inputSearch.value;
-    //console.log('fetch - nowe zdjęcia', this.inputSearch);
     this.setState(
       prevState => {
         return {
@@ -141,12 +140,10 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleSubmit} />
         {console.log('inputSearch po render', this.inputSearch)}
         <ImageGallery images={this.state.images} action={this.toggleModal} />
-        {/* {
-          (this.state.isModalOpen = true && (
-            <Button label="Load More" action={this.handleLoadMore} />
-          ))
-        } */}
-        <Button label="Load More" action={this.handleLoadMore} />
+        {this.state.isMorePages && (
+          <Button label="Load More" action={this.handleLoadMore} />
+        )}
+        {/* <Button label="Load More" action={this.handleLoadMore} /> */}
         <Modal
           largeImageURL={this.largeImageURL}
           alt={this.alt}
