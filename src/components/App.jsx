@@ -76,13 +76,29 @@ export class App extends Component {
     this.setState(prevState => ({ isModalOpen: !prevState.isModalOpen }));
     this.largeImageURL = e.target.dataset.large;
     this.alt = e.target.dataset.alt;
+    window.addEventListener('keyup', this.handleModalOnKey);
+  };
+  handleModalOnKey = e => {
+    if (e.key === 'Escape') {
+      this.setState(prevState => {
+        return {
+          isModal: false,
+          // largeImageURL: '',
+          // alt: '',
+        };
+      });
+      this.largeImageURL = '';
+      this.alt = '';
+      window.removeEventListener('keyup', this.handleModalOnKey);
+    }
   };
   // closeModalOnKey = e => {
-  //   e ===
   //   if (e.key === 'Escape') {
   //     this.setState(prevState => ({ isModalOpen: false }));
   //   }
   // };
+
+  //  isModalOpen && isModalOpen: false
 
   // closeModalOnKey = e => {
   //   if ('key' in e && e.key === 'Escape') {
@@ -103,7 +119,7 @@ export class App extends Component {
           largeImageURL={this.largeImageURL}
           alt={this.alt}
           action={this.toggleModal}
-          actionKey={this.closeModalOnKey}
+          actionKey={this.handleModalOnKey}
           modal={this.state.isModalOpen}
         />
       </div>
