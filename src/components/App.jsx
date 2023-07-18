@@ -12,6 +12,8 @@ export class App extends Component {
     inputSearch: '',
     isModalOpen: false,
     page: 1,
+    isMorePages: false,
+    perPage: 12,
   };
 
   async componentDidMount() {
@@ -19,11 +21,16 @@ export class App extends Component {
   }
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.page !== this.state.page) {
+      const data = await this.fetchImages();
+      this.setState(prevState => ({
+        ...prevState,
+        images: [...prevState.images, ...data.hits],
+      }));
       console.log('aktualizuje dane i pobiera fetcha');
-      this.fetchImages();
     }
   }
 
+  // this.setState(prevState => ({ ...prevState, images: data.hits }));
   // Poprawiony setState z callbackiem
 
   fetchImages = async () => {
@@ -40,6 +47,7 @@ export class App extends Component {
       console.log('Error', error);
     }
   };
+
   handleSubmit = e => {
     e.preventDefault();
     this.inputSearch = e.target.elements.inputSearch.value;
@@ -68,17 +76,38 @@ export class App extends Component {
         }
       }
     );
+    if (this.totalHits > this.perPage) {
+      // this.setState(prevState => {
+      //   return { isPages: true };
+      // });
+      this.setIsPages(true);
+    } else {
+      // this.setState(prevState => {
+      //   return { isPages: false };
+      // });
+      this.setIsPages(false);
+    }
   };
   //       jak najmniej w state ma być - dodaję na sztywno, pozostawiam tylko inputSearch(wyszukiwanie) i page(loadMore)
-  //       `https://pixabay.com/api/?q=${inputSearch}&${page}&key=${key}&image_type=photo&orientation=horizontal&${perPage}`
+  //       `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=${key}&image_type=photo&orientation=horizontal&per_page=${perPage}`
 
-  //console.log('inputsearch po handleSubmit', this.inputSearch);
-  // this.fetchImages();
-  // this.setState({ inputSearch: '' });
   // koniec poprawionego setState z callbackiem
+
   handleLoadMore = () => {
     this.setState(prevState => ({ ...prevState, page: prevState.page + 1 }));
     console.log('Wgrywam - strona:', this.state.page);
+    let totalPages = 0;
+    if (this.totalHits % this.perPage !== 0) {
+      totalPages = Math.trunc(this.totalHits / this.perPage) + 1;
+    } else if (this.totalHits % this.perPage === 0) {
+      totalPages = this.totalHits / this.perPage;
+    }
+    if (totalPages === this.state.page) {
+      // this.setState(prevState => {
+      //   return { isPages: false };
+      // });
+      this.setIsPages(false);
+    }
   };
 
   toggleModal = e => {
