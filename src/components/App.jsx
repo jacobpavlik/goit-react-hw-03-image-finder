@@ -71,6 +71,20 @@ export class App extends Component {
               ...prevState,
               images: response.hits,
             }));
+            if (this.totalHits === 0) {
+              console.log('brak obrazów o takiej nazwie');
+            }
+            if (this.totalHits > this.state.perPage) {
+              this.setState(prevState => {
+                return { isMorePages: true };
+              });
+              // setIsPages(true);
+            } else {
+              this.setState(prevState => {
+                return { isMorePages: false };
+              });
+              // setIsPages(false);
+            }
           } else {
             console.log(`${response.code}`);
           }
@@ -79,17 +93,6 @@ export class App extends Component {
         }
       }
     );
-    if (this.totalHits > this.state.perPage) {
-      this.setState(prevState => {
-        return { isMorePages: true };
-      });
-      // setIsPages(true);
-    } else {
-      this.setState(prevState => {
-        return { isMorePages: false };
-      });
-      // setIsPages(false);
-    }
   };
   //       jak najmniej w state ma być - dodaję na sztywno, pozostawiam tylko inputSearch(wyszukiwanie) i page(loadMore)
   //       `https://pixabay.com/api/?q=${inputSearch}&page=${page}&key=${key}&image_type=photo&orientation=horizontal&per_page=${perPage}`
@@ -143,7 +146,6 @@ export class App extends Component {
         {this.state.isMorePages && (
           <Button label="Load More" action={this.handleLoadMore} />
         )}
-        {/* <Button label="Load More" action={this.handleLoadMore} /> */}
         <Modal
           largeImageURL={this.largeImageURL}
           alt={this.alt}
